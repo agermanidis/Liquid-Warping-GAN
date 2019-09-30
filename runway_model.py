@@ -11,9 +11,10 @@ def tensor2np(img_tensor):
     return img
 
 
-@runway.setup(options={'checkpoint_dir': runway.file(is_directory=True)})
+@runway.setup(options={'checkpoint_dir': runway.file(is_directory=True), 'pretrained_renderer_dir': runway.file(is_directory=True)})
 def setup(opts):
     shutil.move(opts['checkpoint_dir'], 'outputs/checkpoints')
+    shutil.move(opts['pretrained_renderer_dir'], 'assets/pretrains')
     opt = TestOptions().parse()
     opt.bg_ks = 13
     opt.ft_ks = 3
