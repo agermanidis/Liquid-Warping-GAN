@@ -1,5 +1,6 @@
 import runway
 import numpy as np
+import shutil
 from models.swapper import Swapper
 from models.imitator import Imitator
 from options.test_options import TestOptions
@@ -10,8 +11,9 @@ def tensor2np(img_tensor):
     return img
 
 
-@runway.setup
-def setup():
+@runway.setup(options={'checkpoint_dir': runway.file(is_directory=True)})
+def setup(opts):
+    shutil.move(opts['checkpoint_dir'], 'outputs/checkpoints')
     opt = TestOptions().parse()
     opt.bg_ks = 13
     opt.ft_ks = 3
