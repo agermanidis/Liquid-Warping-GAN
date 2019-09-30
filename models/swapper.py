@@ -94,9 +94,9 @@ class Swapper(BaseModel):
 
     # TODO it dose not support mini-batch inputs currently.
     @torch.no_grad()
-    def personalize(self, src_path, src_smpl=None, output_path='', visualizer=None):
+    def personalize(self, ori_img, src_smpl=None, output_path='', visualizer=None):
 
-        ori_img = cv_utils.read_cv2_img(src_path)
+        # ori_img = cv_utils.read_cv2_img(src_path)
 
         # resize image and convert the color space from [0, 255] to [-1, 1]
         img = cv_utils.transform_img(ori_img, self._opt.image_size, transpose=True) * 2 - 1.0
@@ -189,9 +189,9 @@ class Swapper(BaseModel):
         return tsf_smpl
 
     @torch.no_grad()
-    def swap_setup(self, src_path, tgt_path, src_smpl=None, tgt_smpl=None, output_dir=''):
-        self.src_info = self.personalize(src_path, src_smpl)
-        self.tsf_info = self.personalize(tgt_path, tgt_smpl)
+    def swap_setup(self, src_img, tgt_img, src_smpl=None, tgt_smpl=None, output_dir=''):
+        self.src_info = self.personalize(src_img, src_smpl)
+        self.tsf_info = self.personalize(tgt_img, tgt_smpl)
 
     @torch.no_grad()
     def swap(self, src_info, tgt_info, target_part='body', visualizer=None):
